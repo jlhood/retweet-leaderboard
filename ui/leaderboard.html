@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Retweet Leaderboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.js"></script>
+</head>
+
+<body>
+  <div class="ui container">
+    <h1>Retweet Leaderboard</h1>
+    <table id="leaderboardTable" class="ui striped table segment">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th># Retweets</th>
+        </tr>
+      </thead>
+      <tbody class="ui segment">
+        <tr>
+          <td colspan="3">
+            <div class="ui active inverted dimmer">
+              <div class="ui text loader">Loading</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+    function updateRows(leaderboard) {
+      const rows = leaderboard.map((user, i) => {
+        const rank = i + 1
+        const rankColors = [, 'yellow', 'grey', 'brown']
+        const rankCell = rank <= 3 ? `<div class="ui ${rankColors[rank]} ribbon label">${rank}</div>` : rank
+        return `<tr><td>${rankCell}</td><td>${user.username}</td><td>${user.count}</td></tr>`
+      })
+      $('#leaderboardTable tbody').html(rows);
+    }
+
+    async function fetchLeaderboard() {
+      const response = await fetch('https://REPLACE-WITH-ENDPOINT.execute-api.us-west-2.amazonaws.com/Prod/leaderboard')
+      const leaderboard = await response.json()
+
+      updateRows(leaderboard)
+    }
+
+    fetchLeaderboard()
+    window.setInterval(fetchLeaderboard, 3000)
+</script>
+</html>
