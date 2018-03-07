@@ -2,6 +2,7 @@ package com.jlhood.retweetcounter.dagger;
 
 import javax.inject.Singleton;
 
+import com.jlhood.retweetcounter.Leaderboard;
 import com.jlhood.retweetcounter.TweetProcessor;
 
 import dagger.Component;
@@ -13,4 +14,6 @@ import dagger.Component;
 @Component(modules = AppModule.class)
 public interface AppComponent {
     TweetProcessor tweetProcessor();
+
+    Leaderboard leaderboard();
 }
