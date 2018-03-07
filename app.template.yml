@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  TargetTweetId:
+    Type: String
+    Description: Target tweet that should be quoted to be counted.
+
+Resources:
+  TweetProcessor:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/retweet-counter-1.0.0-SNAPSHOT.jar
+      Runtime: java8
+      Handler: com.jlhood.retweetcounter.lambda.TweetProcessorHandler::handleRequest
+      Tracing: Active
+      MemorySize: 512
+      Timeout: 60
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Leaderboard
+      Environment:
+        Variables:
+          TARGET_TWEET_ID: !Ref TargetTweetId
+          LEADERBOARD_TABLE_NAME: !Ref Leaderboard
+
+  GetLeaderboard:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/retweet-counter-1.0.0-SNAPSHOT.jar
+      Runtime: java8
+      Handler: com.jlhood.retweetcounter.lambda.GetLeaderboardHandler::handleRequest
+      Tracing: Active
+      MemorySize: 512
+      Timeout: 60
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Leaderboard
+      Environment:
+        Variables:
+          TARGET_TWEET_ID: !Ref TargetTweetId
+          LEADERBOARD_TABLE_NAME: !Ref Leaderboard
+      Events:
+        GetLeaderboardApi:
+          Type: Api
+          Properties:
+            Path: /leaderboard
+            Method: get
+
+  Leaderboard:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 10
