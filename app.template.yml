@@ -1,9 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
-Parameters:
-  TargetTweetId:
-    Type: String
-    Description: Target tweet that should be quoted to be counted.
 
 Resources:
   TweetProcessor:
@@ -20,7 +16,6 @@ Resources:
             TableName: !Ref Leaderboard
       Environment:
         Variables:
-          TARGET_TWEET_ID: !Ref TargetTweetId
           LEADERBOARD_TABLE_NAME: !Ref Leaderboard
 
   GetLeaderboard:
@@ -37,7 +32,6 @@ Resources:
             TableName: !Ref Leaderboard
       Environment:
         Variables:
-          TARGET_TWEET_ID: !Ref TargetTweetId
           LEADERBOARD_TABLE_NAME: !Ref Leaderboard
       Events:
         GetLeaderboardApi:

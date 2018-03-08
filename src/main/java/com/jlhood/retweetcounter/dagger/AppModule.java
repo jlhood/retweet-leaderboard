@@ -21,7 +21,7 @@ public class AppModule {
     @Provides
     @Singleton
     public TweetProcessor provideTweetProcessor(final Leaderboard leaderboard) {
-        return new TweetProcessor(leaderboard, Env.getTargetTweetId());
+        return new TweetProcessor(leaderboard);
     }
 
     @Provides
