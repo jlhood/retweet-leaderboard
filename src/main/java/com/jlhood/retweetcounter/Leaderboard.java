@@ -37,14 +37,19 @@ public class Leaderboard {
 
     public void update(List<RetweetCount> retweetCounts) {
         LeaderboardRecord record = getOrDefault();
-        retweetCounts.forEach(c -> updateCount(record, c));
+        retweetCounts.stream()
+                .filter(c -> c.getCount() > 0)
+                .forEach(c -> updateCount(record, c));
         mapper.save(record, mapperConfig);
     }
 
-    private void updateCount(LeaderboardRecord record, RetweetCount count) {
-        record.getRetweetCounts().putIfAbsent(count.getUsername(), count);
-        if (count.getCount() > record.getRetweetCounts().get(count.getUsername()).getCount()) {
-            record.getRetweetCounts().put(count.getUsername(), count);
+    private void updateCount(LeaderboardRecord record, RetweetCount current) {
+        log.info("Processing retweet count: {}", current);
+        record.getRetweetCounts().putIfAbsent(current.getUsername(), current);
+        RetweetCount previous = record.getRetweetCounts().get(current.getUsername());
+        if (current.getCount() > previous.getCount()) {
+            log.info("Updating count from {} to {}", previous, current);
+            record.getRetweetCounts().put(current.getUsername(), current);
         }
     }
 
