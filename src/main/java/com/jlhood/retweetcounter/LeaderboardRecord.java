@@ -25,7 +25,7 @@ public class LeaderboardRecord {
     private String id;
 
     @DynamoDBVersionAttribute
-    private long recordVersionNumber;
+    private Long recordVersionNumber;
 
     @DynamoDBAttribute
     @DynamoDBTypeConverted(converter = RetweetCountsMapConverter.class)
