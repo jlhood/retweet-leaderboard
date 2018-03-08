@@ -19,6 +19,7 @@ public class TweetProcessor implements Consumer<List<String>> {
         log.info("Processing {} tweets", tweetsAsJson.size());
         leaderboard.update(tweetsAsJson.stream()
                 .map(Tweet::new)
+                .filter(t -> !t.isRetweet())
                 .map(this::toRetweetCount)
                 .collect(Collectors.toList()));
     }

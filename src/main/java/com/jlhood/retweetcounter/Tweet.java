@@ -19,6 +19,10 @@ public class Tweet {
         return json.getJSONObject("user").getString("screen_name");
     }
 
+    public boolean isRetweet() {
+        return json.has("retweeted_status");
+    }
+
     public boolean isQuoteTweet() {
         return json.getBoolean("is_quote_status");
     }
