@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
+import com.google.common.base.Preconditions;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +31,11 @@ public class Leaderboard {
                 .build();
     }
 
-    public List<RetweetCount> load() {
+    public List<RetweetCount> load(int limit) {
+        Preconditions.checkArgument(limit > 0, "limit must be a positive number");
         return getOrDefault().getRetweetCounts().values().stream()
                 .sorted(Comparator.comparing(RetweetCount::getCount).reversed())
+                .limit(limit)
                 .collect(Collectors.toList());
     }
 
