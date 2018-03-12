@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Range;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class Leaderboard {
     private static final String RECORD_KEY = "leaderboard";
     private static final Comparator<RetweetCount> COMPARATOR = new RetweetCountComparator();
+    private static final int DEFAULT_LIMIT = 10;
+    private static final Range<Integer> LIMIT_RANGE = Range.closed(3, 100);
 
     @NonNull
     private final DynamoDBMapper mapper;
@@ -32,12 +34,19 @@ public class Leaderboard {
                 .build();
     }
 
-    public List<RetweetCount> load(int limit) {
-        Preconditions.checkArgument(limit > 0, "limit must be a positive number");
+    public List<RetweetCount> load(Integer limit) {
         return getOrDefault().getRetweetCounts().values().stream()
                 .sorted(COMPARATOR)
-                .limit(limit)
+                .limit(getLimit(limit))
                 .collect(Collectors.toList());
+    }
+
+    private long getLimit(Integer userProvidedLimit) {
+        int limit = Optional.ofNullable(userProvidedLimit).orElse(DEFAULT_LIMIT);
+        if (LIMIT_RANGE.contains(limit)) {
+            return limit;
+        }
+        return DEFAULT_LIMIT;
     }
 
     public void update(List<RetweetCount> retweetCounts) {

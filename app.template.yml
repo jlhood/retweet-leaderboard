@@ -17,7 +17,6 @@ Resources:
       Environment:
         Variables:
           LEADERBOARD_TABLE_NAME: !Ref Leaderboard
-          LEADERBOARD_LIMIT: 10
 
   GetLeaderboard:
     Type: AWS::Serverless::Function
@@ -34,7 +33,6 @@ Resources:
       Environment:
         Variables:
           LEADERBOARD_TABLE_NAME: !Ref Leaderboard
-          LEADERBOARD_LIMIT: 10
       Events:
         GetLeaderboardApi:
           Type: Api

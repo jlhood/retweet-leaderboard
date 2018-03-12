@@ -13,7 +13,6 @@ import com.google.gson.GsonBuilder;
 import com.jlhood.retweetcounter.Leaderboard;
 import com.jlhood.retweetcounter.dagger.AppComponent;
 import com.jlhood.retweetcounter.dagger.DaggerAppComponent;
-import com.jlhood.retweetcounter.dagger.Env;
 
 public class GetLeaderboardHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
@@ -31,6 +30,17 @@ public class GetLeaderboardHandler implements RequestHandler<APIGatewayProxyRequ
         return new APIGatewayProxyResponseEvent()
                 .withStatusCode(200)
                 .withHeaders(CORS_HEADERS)
-                .withBody(GSON.toJson(leaderboard.load(Env.getLeaderboardLimit())));
+                .withBody(GSON.toJson(leaderboard.load(getLimit(request))));
+    }
+
+    private Integer getLimit(APIGatewayProxyRequestEvent request) {
+        if (request.getQueryStringParameters() == null) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(request.getQueryStringParameters().get("limit"));
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
