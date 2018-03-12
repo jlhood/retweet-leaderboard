@@ -1,38 +1,34 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
+Globals:
+  Function:
+    Runtime: java8
+    Tracing: Active
+    MemorySize: 512
+    Timeout: 60
+    Environment:
+      Variables:
+        LEADERBOARD_TABLE_NAME: !Ref Leaderboard
+
 Resources:
   TweetProcessor:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
-      Runtime: java8
       Handler: com.jlhood.retweetcounter.lambda.TweetProcessorHandler::handleRequest
-      Tracing: Active
-      MemorySize: 512
-      Timeout: 60
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Leaderboard
-      Environment:
-        Variables:
-          LEADERBOARD_TABLE_NAME: !Ref Leaderboard
 
   GetLeaderboard:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
-      Runtime: java8
       Handler: com.jlhood.retweetcounter.lambda.GetLeaderboardHandler::handleRequest
-      Tracing: Active
-      MemorySize: 512
-      Timeout: 60
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Leaderboard
-      Environment:
-        Variables:
-          LEADERBOARD_TABLE_NAME: !Ref Leaderboard
       Events:
         GetLeaderboardApi:
           Type: Api
