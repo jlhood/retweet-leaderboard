@@ -25,6 +25,6 @@ public class TweetProcessor implements Consumer<List<String>> {
     }
 
     private RetweetCount toRetweetCount(Tweet tweet) {
-        return new RetweetCount(tweet.getUsername(), tweet.getRetweetCount());
+        return new RetweetCount(tweet.getUsername(), tweet.getRetweetCount(), tweet.getFavoriteCount());
     }
 }

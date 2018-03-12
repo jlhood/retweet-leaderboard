@@ -18,11 +18,12 @@
           <th>Rank</th>
           <th>Name</th>
           <th># Retweets</th>
+          <th># Favorites</th>
         </tr>
       </thead>
       <tbody class="ui segment">
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <div class="ui active inverted dimmer">
               <div class="ui text loader">Loading</div>
             </div>
@@ -38,7 +39,7 @@
         const rank = i + 1
         const rankColors = [, 'yellow', 'grey', 'brown']
         const rankCell = rank <= 3 ? `<div class="ui ${rankColors[rank]} ribbon label">${rank}</div>` : rank
-        return `<tr><td>${rankCell}</td><td>${user.username}</td><td>${user.count}</td></tr>`
+        return `<tr><td>${rankCell}</td><td>${user.username}</td><td>${user.retweetCount}</td><td>${user.favoriteCount}</td></tr>`
       })
       $('#leaderboardTable tbody').html(rows);
     }

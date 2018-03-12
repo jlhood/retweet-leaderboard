@@ -1,5 +1,7 @@
 package com.jlhood.retweetcounter;
 
+import java.util.Comparator;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RetweetCount {
     private String username;
-    private long count;
+    private long retweetCount;
+    private long favoriteCount;
 }

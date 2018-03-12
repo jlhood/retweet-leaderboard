@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Leaderboard {
     private static final String RECORD_KEY = "leaderboard";
+    private static final Comparator<RetweetCount> COMPARATOR = new RetweetCountComparator();
 
     @NonNull
     private final DynamoDBMapper mapper;
@@ -34,26 +35,25 @@ public class Leaderboard {
     public List<RetweetCount> load(int limit) {
         Preconditions.checkArgument(limit > 0, "limit must be a positive number");
         return getOrDefault().getRetweetCounts().values().stream()
-                .sorted(Comparator.comparing(RetweetCount::getCount).reversed())
+                .sorted(COMPARATOR)
                 .limit(limit)
                 .collect(Collectors.toList());
     }
 
     public void update(List<RetweetCount> retweetCounts) {
         LeaderboardRecord record = getOrDefault();
-        retweetCounts.stream()
-                .filter(c -> c.getCount() > 0)
-                .forEach(c -> updateCount(record, c));
+        retweetCounts.forEach(c -> updateCount(record, c));
         mapper.save(record, mapperConfig);
     }
 
-    private void updateCount(LeaderboardRecord record, RetweetCount current) {
-        log.info("Processing retweet count: {}", current);
-        record.getRetweetCounts().putIfAbsent(current.getUsername(), current);
-        RetweetCount previous = record.getRetweetCounts().get(current.getUsername());
-        if (current.getCount() > previous.getCount()) {
-            log.info("Updating count from {} to {}", previous, current);
-            record.getRetweetCounts().put(current.getUsername(), current);
+    private void updateCount(LeaderboardRecord record, RetweetCount newCount) {
+        log.info("Processing new retweet count: {}", newCount);
+        record.getRetweetCounts().putIfAbsent(newCount.getUsername(), newCount);
+        RetweetCount currentCount = record.getRetweetCounts().get(newCount.getUsername());
+        boolean isBetterScore = COMPARATOR.compare(newCount, currentCount) < 0;
+        if (isBetterScore) {
+            log.info("Updating count from {} to {}", currentCount, newCount);
+            record.getRetweetCounts().put(newCount.getUsername(), newCount);
         }
     }
 

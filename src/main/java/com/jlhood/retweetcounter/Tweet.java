@@ -35,4 +35,8 @@ public class Tweet {
     public long getRetweetCount() {
         return json.getLong("retweet_count");
     }
+
+    public long getFavoriteCount() {
+        return json.getLong("favorite_count");
+    }
 }
