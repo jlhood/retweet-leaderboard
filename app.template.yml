@@ -5,7 +5,7 @@ Resources:
   TweetProcessor:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: target/retweet-counter-1.0.0-SNAPSHOT.jar
+      CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
       Runtime: java8
       Handler: com.jlhood.retweetcounter.lambda.TweetProcessorHandler::handleRequest
       Tracing: Active
@@ -22,7 +22,7 @@ Resources:
   GetLeaderboard:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: target/retweet-counter-1.0.0-SNAPSHOT.jar
+      CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
       Runtime: java8
       Handler: com.jlhood.retweetcounter.lambda.GetLeaderboardHandler::handleRequest
       Tracing: Active

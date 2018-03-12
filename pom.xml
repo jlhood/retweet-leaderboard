@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jlhood</groupId>
-    <artifactId>retweet-counter</artifactId>
+    <artifactId>retweet-leaderboard</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>retweet-counter</name>
-    <url>https://github.com/jlhood/retweet-counter</url>
+    <name>retweet-leaderboard</name>
+    <url>https://github.com/jlhood/retweet-leaderboard</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
