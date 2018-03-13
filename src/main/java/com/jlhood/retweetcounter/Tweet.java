@@ -19,7 +19,7 @@ public class Tweet {
         return json.getJSONObject("user").getString("screen_name");
     }
 
-    public boolean isRetweet() {
+    public boolean isNativeRetweet() {
         return json.has("retweeted_status");
     }
 
