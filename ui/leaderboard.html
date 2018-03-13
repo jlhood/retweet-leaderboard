@@ -34,6 +34,9 @@
   </div>
 </body>
 <script>
+    // Replace with your API Gateway endpoint
+    const ENDPOINT = 'https://REPLACE-WITH-API.execute-api.REPLACE-WITH-REGION.amazonaws.com/Prod'
+
     function updateRows(leaderboard) {
       const rows = leaderboard.map((user, i) => {
         const rank = i + 1
@@ -45,7 +48,7 @@
     }
 
     async function fetchLeaderboard() {
-      const response = await fetch('https://REPLACE-WITH-ENDPOINT.execute-api.us-west-2.amazonaws.com/Prod/leaderboard')
+      const response = await fetch(ENDPOINT + '/leaderboard')
       const leaderboard = await response.json()
 
       updateRows(leaderboard)

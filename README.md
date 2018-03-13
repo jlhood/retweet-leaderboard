@@ -34,6 +34,17 @@ Refer to the aws-serverless-twitter-event-source [README](https://github.com/aws
 1. `SearchText` - This controls what tweets are pulled in as part of the game. Usually you should add some uncommon combination of hashtags to search for to try to limit results to just people playing the game. You should also add `-filter:nativeretweets min_retweets:1` to your query. `-filter:nativeretweets` ensures only the original tweets are returned by the search and not the records for each retweet. `min_retweets:1` ensures the leaderboard only contains Twitter handles who have received at least one retweet. So for example, if I tell my players to tweet a post containing the hashtags #serverless and #retweetgame in order to play, I would set the `SearchText` parameter to `#serverless #retweetgame -filter:nativeretweets min_retweets:1`.
     1. Also note, if you want to change the SearchText after deploying the app, you can always do this via the AWS Lambda Console by finding the TwitterSearchPoller lambda created by the aws-serverless-twitter-event-source and changing its `SEARCH_TEXT` environment variable value.
 
+### UI
+
+The UI is a simple html page that you can open locally in your browser.
+
+1. The UI is contained in `ui/leaderboard.html`. Either clone the github repo or download the file from github directly.
+1. Edit the file. Find the constant called `ENDPOINT` and replace it with the API Gateway endpoint that was created when you deployed this serverless app. To find the endpoint:
+    1. Go to the [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/home).
+    1. Click on the LeaderboardApi API in the menu on the left.
+    1. Click "Stages" on the menu on the left.
+    1. Click on the "Prod" stage. The endpoint will be displayed. Copy this value into the `ENDPOINT` constant in the UI html file.
+
 ## License Summary
 
 This code is made available under the MIT license. See the LICENSE file.
