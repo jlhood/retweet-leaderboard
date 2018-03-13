@@ -15,7 +15,7 @@ Resources:
   TweetProcessor:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
+      CodeUri: target/retweet-leaderboard-1.0.0.jar
       Handler: com.jlhood.retweetcounter.lambda.TweetProcessorHandler::handleRequest
       Policies:
         - DynamoDBCrudPolicy:
@@ -24,7 +24,7 @@ Resources:
   GetLeaderboard:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: target/retweet-leaderboard-1.0.0-SNAPSHOT.jar
+      CodeUri: target/retweet-leaderboard-1.0.0.jar
       Handler: com.jlhood.retweetcounter.lambda.GetLeaderboardHandler::handleRequest
       Policies:
         - DynamoDBCrudPolicy:
