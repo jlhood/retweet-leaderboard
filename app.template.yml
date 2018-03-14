@@ -6,7 +6,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: java8
-      CodeUri: target/retweet-leaderboard-1.0.1.jar
+      CodeUri: target/retweet-leaderboard-1.0.2-SNAPSHOT.jar
       Handler: com.jlhood.retweetcounter.lambda.TweetProcessorHandler::handleRequest
       Tracing: Active
       MemorySize: 512
@@ -22,7 +22,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: java8
-      CodeUri: target/retweet-leaderboard-1.0.1.jar
+      CodeUri: target/retweet-leaderboard-1.0.2-SNAPSHOT.jar
       Handler: com.jlhood.retweetcounter.lambda.GetLeaderboardHandler::handleRequest
       Tracing: Active
       MemorySize: 512
